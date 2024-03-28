@@ -62,12 +62,29 @@
   <ItemGroup>
     <Folder Include="Properties" />
     <Folder Include="Tables" />
+    <Folder Include="Stored Procedures" />
+    <Folder Include="Scripts" />
+    <Folder Include="Functions" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="auth.sql" />
+    <Build Include="Tables\auth.Account.sql" />
+    <Build Include="Tables\auth.User.sql" />
+    <Build Include="Tables\auth.AccountUser.sql" />
+    <Build Include="Tables\auth.UserCredential.sql" />
+    <Build Include="Tables\auth.AuthorizationCode.sql" />
+    <Build Include="Tables\auth.Client.sql" />
+    <Build Include="Stored Procedures\auth.CreateAccount.sql" />
+    <Build Include="Stored Procedures\auth.UpdateAccount.sql" />
+    <Build Include="Stored Procedures\auth.CreateUser.sql" />
+    <Build Include="Stored Procedures\auth.UpdateUser.sql" />
+    <Build Include="Stored Procedures\auth.GetUserByName.sql" />
+    <Build Include="Stored Procedures\auth.ActivateAccoutUser.sql" />
+    <Build Include="Functions\auth.IsUserNameAvailable.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="CompareLocal.scmp" />
     <None Include="LocalDatabase.publish.xml" />
+    <None Include="Scripts\user-setup.sql" />
   </ItemGroup>
 </Project>
