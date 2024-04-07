@@ -3,6 +3,9 @@
 	@name NVARCHAR(512),
 	@emailAddressId UNIQUEIDENTIFIER,
 	@isActive BIT,
+	@secretKey UNIQUEIDENTIFIER,
+	@secretSalt BINARY(16),
+	@credentialExpiration DATETIME2(1),
 	@timestamp DATETIME2(4) OUT
 AS
 BEGIN
@@ -31,6 +34,11 @@ BEGIN
 
 	DECLARE @accountUserTimestamp DATETIME2(4);
 	EXEC [auth].[ActivateAccoutUser] @accountId, @id, @isActive, @accountUserTimestamp out;
+
+	DECLARE @credentialId UNIQUEIDENTIFIER;
+	DECLARE @credentialTimestamp DATETIME2(4);
+	EXEC [auth].[SetUserCredential] @credentialId OUT, @id, @secretKey, @secretSalt, 1, @credentialExpiration, @credentialTimestamp OUT;
+
 	COMMIT TRANSACTION
 	END TRY
 	BEGIN CATCH

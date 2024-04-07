@@ -81,6 +81,7 @@
     <Build Include="Stored Procedures\auth.GetUserByName.sql" />
     <Build Include="Stored Procedures\auth.ActivateAccoutUser.sql" />
     <Build Include="Functions\auth.IsUserNameAvailable.sql" />
+    <Build Include="Stored Procedures\auth.SetUserCredential.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="CompareLocal.scmp" />
