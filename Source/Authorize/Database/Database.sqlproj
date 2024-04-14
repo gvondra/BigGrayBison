@@ -82,10 +82,12 @@
     <Build Include="Stored Procedures\auth.ActivateAccoutUser.sql" />
     <Build Include="Functions\auth.IsUserNameAvailable.sql" />
     <Build Include="Stored Procedures\auth.SetUserCredential.sql" />
+    <Build Include="Stored Procedures\auth.CreateClient.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="CompareLocal.scmp" />
     <None Include="LocalDatabase.publish.xml" />
     <None Include="Scripts\user-setup.sql" />
+    <None Include="Scripts\client-setup.sql" />
   </ItemGroup>
 </Project>

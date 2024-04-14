@@ -1,5 +1,5 @@
 ﻿/*
-Run this script as part of system setup/installation add an initail user
+Run this script as part of system setup/installation add an initial user
 */
 
 DECLARE @id UNIQUEIDENTIFIER;
