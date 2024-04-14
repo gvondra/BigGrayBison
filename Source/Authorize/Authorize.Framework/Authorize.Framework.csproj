@@ -24,4 +24,8 @@
 		<Optimize>True</Optimize>
 	</PropertyGroup>
 
+	<ItemGroup>
+	  <ProjectReference Include="..\Authorize.Constants.Internal\Authorize.Constants.Internal.csproj" />
+	</ItemGroup>
+
 </Project>

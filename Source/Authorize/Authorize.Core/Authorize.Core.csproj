@@ -24,4 +24,10 @@
 		<Optimize>True</Optimize>
 	</PropertyGroup>
 
+	<ItemGroup>
+	  <ProjectReference Include="..\Authorize.Constants.Internal\Authorize.Constants.Internal.csproj" />
+	  <ProjectReference Include="..\Authorize.Data\Authorize.Data.csproj" />
+	  <ProjectReference Include="..\Authorize.Framework\Authorize.Framework.csproj" />
+	</ItemGroup>
+
 </Project>

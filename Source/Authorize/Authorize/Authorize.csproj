@@ -41,4 +41,10 @@
 		</PackageReference>
 	</ItemGroup>
 
+	<ItemGroup>
+	  <ProjectReference Include="..\Authorize.Constants.Internal\Authorize.Constants.Internal.csproj" />
+	  <ProjectReference Include="..\Authorize.Core\Authorize.Core.csproj" />
+	  <ProjectReference Include="..\Authorize.Framework\Authorize.Framework.csproj" />
+	</ItemGroup>
+
 </Project>
