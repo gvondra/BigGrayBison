@@ -1,4 +1,4 @@
-﻿namespace Authorize.Constants.Internal.Enumerations
+﻿namespace BigGrayBison.Authorize.Constants.Internal.Enumerations
 {
     public enum ClientType : short
     {

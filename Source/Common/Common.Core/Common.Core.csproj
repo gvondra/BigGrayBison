@@ -4,8 +4,8 @@
 		<TargetFramework>net8.0</TargetFramework>
 		<Nullable>disable</Nullable>
 		<ImplicitUsings>disable</ImplicitUsings>
-		<AssemblyName>BGB.Authorize.Data</AssemblyName>
-		<RootNamespace>BigGrayBison.Authorize.Data</RootNamespace>
+		<AssemblyName>BGB.Common.Core</AssemblyName>
+		<RootNamespace>BigGrayBison.Common.Core</RootNamespace>
 		<Authors>Greg Vondra</Authors>
 		<Company />
 		<Product>Big Gray Bison</Product>
@@ -25,17 +25,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <PackageReference Include="Autofac" Version="8.0.*" />
-	  <PackageReference Include="BrassLoon.DataClient" Version="3.6.*" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<Using Include="BigGrayBison.Authorize.Data" />
-		<Using Include="BigGrayBison.Authorize.Data.Models" />
-		<Using Include="BrassLoon.DataClient" />
-		<Using Include="System" />
-		<Using Include="System.Data"/>
-		<Using Include="System.Linq"/>
-		<Using Include="System.Threading.Tasks" />
+		<PackageReference Include="BrassLoon.DataClient" Version="3.6.*" />
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.*" />
 	</ItemGroup>
 </Project>

@@ -36,12 +36,16 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<PackageReference Include="Autofac" Version="8.0.0" />
+		<PackageReference Include="Autofac.Extensions.DependencyInjection" Version="9.0.0" />
+		<PackageReference Include="BrassLoon.Extensions.Logging" Version="1.0.*" />
 		<PackageReference Include="BuildWebCompiler2022" Version="1.14.10">
 			<PrivateAssets>all</PrivateAssets>
 		</PackageReference>
 	</ItemGroup>
 
 	<ItemGroup>
+	  <ProjectReference Include="..\..\Common\Common.Core\Common.Core.csproj" />
 	  <ProjectReference Include="..\Authorize.Constants.Internal\Authorize.Constants.Internal.csproj" />
 	  <ProjectReference Include="..\Authorize.Core\Authorize.Core.csproj" />
 	  <ProjectReference Include="..\Authorize.Framework\Authorize.Framework.csproj" />

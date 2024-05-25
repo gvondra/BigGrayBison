@@ -1,8 +1,15 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Authorize";
+    Dictionary<string, string> loginParameters = new Dictionary<string, string>
+    {
+        { "client_id", ViewData["LoginClientId"]?.ToString() },
+        { "redirect_uri", ViewData["LoginRedirectUrl"]?.ToString() },
+        { "response_type", "code" }
+    };
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div>
+    <h1>Big Gray Bison <img src="~/image/Bison-Silhouette.svg" style="height:1.1em" /></h1>
+    <h2>Authorization</h2>
+    <a asp-controller="Login" asp-action="Index" asp-all-route-data="loginParameters">Login</a>
 </div>
