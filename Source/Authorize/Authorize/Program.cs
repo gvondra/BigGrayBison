@@ -6,6 +6,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.OpenApi.Models;
+using Newtonsoft.Json.Serialization;
+using System;
 
 namespace Authorize
 {
@@ -38,14 +41,62 @@ namespace Authorize
                 }
             });
 
+            builder.Services.AddControllers()
+            .AddNewtonsoftJson(o =>
+            {
+                o.SerializerSettings.ContractResolver = new DefaultContractResolver();
+            })
+            .AddJsonOptions(o =>
+            {
+                o.JsonSerializerOptions.PropertyNamingPolicy = null;
+            })
+            ;
             builder.Services.AddControllersWithViews();
+
+            _ = builder.Services.AddEndpointsApiExplorer();
+            _ = builder.Services.AddSwaggerGen(o =>
+            {
+                o.SwaggerDoc(
+                    "v1",
+                    new OpenApiInfo
+                    {
+                        Version = "v1",
+                        Title = "Big Gray Bison Authorization API"
+                    });
+                o.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                {
+                    In = ParameterLocation.Header,
+                    Description = "Please insert JWT with Bearer into field",
+                    Name = "Authorization",
+                    Type = SecuritySchemeType.ApiKey
+                });
+                o.AddSecurityRequirement(new OpenApiSecurityRequirement
+                {
+                    {
+                        new OpenApiSecurityScheme
+                        {
+                        Reference = new OpenApiReference
+                        {
+                            Type = ReferenceType.SecurityScheme,
+                            Id = "Bearer"
+                        }
+                        },
+                        Array.Empty<string>()
+                    }
+                });
+            });
 
             WebApplication app = builder.Build();
 
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())
             {
-                app.UseExceptionHandler("/Home/Error");
+                _ = app.UseExceptionHandler("/Home/Error");
+            }
+            else
+            {
+                _ = app.UseSwagger();
+                _ = app.UseSwaggerUI();
             }
             app.UseStaticFiles();
 

@@ -1,5 +1,6 @@
 ﻿using Autofac;
 using BigGrayBison.Authorize.Framework;
+using BigGrayBison.Common.Core;
 
 namespace BigGrayBison.Authorize.Core
 {
@@ -10,6 +11,9 @@ namespace BigGrayBison.Authorize.Core
             base.Load(builder);
             builder.RegisterModule(new BigGrayBison.Authorize.Data.AuthorizeDataModule());
             builder.RegisterType<ClientFactory>().As<IClientFactory>();
+            builder.RegisterType<KeyVault>().As<IKeyVault>();
+            builder.RegisterType<SigningKeyFactory>().As<ISigningKeyFactory>();
+            builder.RegisterType<SigningKeySaver>().As<ISigningKeySaver>();
         }
     }
 }

@@ -42,6 +42,8 @@
 		<PackageReference Include="BuildWebCompiler2022" Version="1.14.10">
 			<PrivateAssets>all</PrivateAssets>
 		</PackageReference>
+		<PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="8.0.*" />
+		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.*" />
 	</ItemGroup>
 
 	<ItemGroup>

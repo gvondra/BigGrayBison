@@ -1,9 +1,10 @@
-﻿using System;
+﻿using BigGrayBison.Authorize.Framework;
+using System;
 using System.Threading.Tasks;
 
 namespace Authorize
 {
-    public class CoreSettings : BigGrayBison.Common.Core.ISettings
+    public class CoreSettings : ISettings
     {
         private readonly Settings _settings;
 
@@ -13,6 +14,8 @@ namespace Authorize
         }
 
         public bool UseDefaultAzureSqlToken => _settings.EnableDatabaseAccessToken;
+
+        public string SigningKeyVaultAddress => _settings.SigningKeyVaultAddress;
 
         public Task<string> GetConnetionString() => Task.FromResult(_settings.ConnectionString);
 

@@ -12,5 +12,6 @@ namespace Authorize
         public Guid? BrassLoonClientId { get; set; }
         public string BrassLoonClientSecret { get; set; }
         public string BrassLoonLogRpcBaseAddress { get; set; }
+        public string SigningKeyVaultAddress { get; set; }
     }
 }

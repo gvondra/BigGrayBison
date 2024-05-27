@@ -84,6 +84,10 @@
     <Build Include="Stored Procedures\auth.SetUserCredential.sql" />
     <Build Include="Stored Procedures\auth.CreateClient.sql" />
     <Build Include="Stored Procedures\auth.GetClient.sql" />
+    <Build Include="Tables\auth.SigningKey.sql" />
+    <Build Include="Stored Procedures\auth.GetSigningKey_All.sql" />
+    <Build Include="Stored Procedures\auth.UpdateSigningKey.sql" />
+    <Build Include="Stored Procedures\auth.CreateSigningKey.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="CompareLocal.scmp" />

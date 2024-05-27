@@ -1,0 +1,9 @@
+﻿CREATE TABLE [auth].[SigningKey]
+(
+	[SigningKeyId] UNIQUEIDENTIFIER NOT NULL,
+	[KeyVaultKey] UNIQUEIDENTIFIER NOT NULL,
+	[IsActive] BIT CONSTRAINT [DF_SigningKey_IsActive] DEFAULT 1 NOT NULL,
+	[CreateTimestamp] DATETIME2(4) CONSTRAINT [DF_SigningKey_CreateTimestamp] DEFAULT(SYSUTCDATETIME()) NOT NULL,
+	[UpdateTimestamp] DATETIME2(4) CONSTRAINT [DF_SigningKey_UpdateTimestamp] DEFAULT(SYSUTCDATETIME()) NOT NULL,
+	CONSTRAINT [PK_SigningKey] PRIMARY KEY CLUSTERED ([SigningKeyId])
+)
