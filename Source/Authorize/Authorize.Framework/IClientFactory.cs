@@ -1,5 +1,4 @@
-﻿using BigGrayBison.Common.Core;
-using System;
+﻿using System;
 using System.Threading.Tasks;
 
 namespace BigGrayBison.Authorize.Framework

@@ -6,7 +6,7 @@
 	[SecretKey] UNIQUEIDENTIFIER NULL,
 	[SecretSalt] BINARY(16) NULL,
 	[IsActive] BIT NOT NULL,
-	[Expiration] DATETIME2(1) NOT NULL,
+	[Expiration] DATETIME2(1) NULL,
 	[CreateTimestamp] DATETIME2(4) CONSTRAINT [DF_UserCredential_CreateTimestamp] DEFAULT(SYSUTCDATETIME()) NOT NULL,
 	[UpdateTimestamp] DATETIME2(4) CONSTRAINT [DF_UserCredential_UpdateTimestamp] DEFAULT(SYSUTCDATETIME()) NOT NULL,
 	CONSTRAINT [PK_UserCredential] PRIMARY KEY NONCLUSTERED ([UserCredentialId]), 

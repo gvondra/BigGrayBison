@@ -18,6 +18,8 @@ namespace BigGrayBison.Authorize.Data
             builder.RegisterType<ClientDataFactory>().As<IClientDataFactory>();
             builder.RegisterType<SigningKeyDataFactory>().As<ISigningKeyDataFactory>();
             builder.RegisterType<SigningKeyDataSaver>().As<ISigningKeyDataSaver>();
+            builder.RegisterType<UserCredentialDataFactory>().As<IUserCredentialDataFactory>();
+            builder.RegisterType<UserDataFactory>().As<IUserDataFactory>();
         }
     }
 }

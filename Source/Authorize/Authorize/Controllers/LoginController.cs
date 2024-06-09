@@ -46,13 +46,20 @@ namespace Authorize.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Index(LoginVM loginVM)
+        public async Task<IActionResult> Index(LoginVM loginVM)
         {
+            IClient client = null;
+            IActionResult result = null;
             if (ModelState.IsValid)
             {
-                ModelState.AddModelError(string.Empty, "test message");
+                if (!string.IsNullOrEmpty(loginVM.ClientId) && Guid.TryParse(loginVM.ClientId, out Guid clientId))
+                    client = await _clientFactory.Get(_settingsFactory.CreateCore(), clientId);
+                result = ValidateRequestParameters(loginVM.ResponseType, client, loginVM.RedirectUrl, loginVM.State);
             }
-            return View(loginVM);
+            if (ModelState.IsValid && result == null && client != null)
+            {
+            }
+            return result ?? View(loginVM);
         }
 
         // much of this is defined in section 4.1.2.1 (https://datatracker.ietf.org/doc/html/rfc6749#section-4.1.2.1)

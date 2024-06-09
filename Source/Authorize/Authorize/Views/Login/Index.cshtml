@@ -27,7 +27,11 @@
     </div>
     <div class="row">
         <div class="col-md-3 offset-md-2">
-            <input type="submit" value="Login" style="margin-top:2rem;" @(ViewContext.ViewData.ModelState.IsValid ? string.Empty : "disabled=\"true\"") />
+            @Html.HiddenFor(m => m.ClientId)
+            @Html.HiddenFor(m => m.RedirectUrl)
+            @Html.HiddenFor(m => m.ResponseType)
+            @Html.HiddenFor(m => m.State)
+            <input type="submit" value="Login" style="margin-top:2rem;" /> <!-- @(ViewContext.ViewData.ModelState.IsValid ? string.Empty : "disabled=\"true\"") /> -->
         </div>
     </div>
 </div>
