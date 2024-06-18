@@ -1,4 +1,6 @@
-﻿namespace BigGrayBison.Authorize.Data.Internal
+﻿using System.Data.Common;
+
+namespace BigGrayBison.Authorize.Data.Internal
 {
     public class UserDataFactory : IUserDataFactory
     {
@@ -25,6 +27,17 @@
                 DataUtil.AssignDataStateManager,
                 parameters))
                 .FirstOrDefault();
+        }
+
+        public async Task<bool> GetUserNameAvailable(ISqlSettings settings, string name)
+        {
+            using DbConnection connection = await _providerFactory.OpenConnection(settings);
+            using DbCommand command = connection.CreateCommand();
+            command.CommandText = "[auth].[GetUserNameAvailable]";
+            command.CommandType = CommandType.StoredProcedure;
+            command.Parameters.Add(
+                DataUtil.CreateParameter(_providerFactory, "name", DbType.String, DataUtil.GetParameterValue(name)));
+            return (bool)await command.ExecuteScalarAsync();
         }
     }
 }

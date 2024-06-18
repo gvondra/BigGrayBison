@@ -1,0 +1,68 @@
+﻿@model Authorize.Models.CreateUserVM
+@{
+    ViewData["Title"] = "Create User";
+}
+<h1>Big Gray Bison <img src="~/image/Bison-Silhouette.svg" style="height:1.1em" /></h1>
+<h2>Create User</h2>
+@if ((Model?.Success ?? string.Empty) != string.Empty) {
+<div class="alert alert-success" role="alert">
+    @Html.DisplayText(Model.Success)
+</div>
+}
+<form id="createUserForm" method="post" style="margin-top:2rem;">
+<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3">
+                <label asp-for="EmailAddress">Email Address</label>
+            </div>
+            <div class="col-md-3">
+                <input asp-for="EmailAddress" type="email" maxlength="10000" />
+                <span asp-validation-for="EmailAddress" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3">
+                <label asp-for="UserName">User Name</label>
+            </div>
+            <div class="col-md-3">
+                <input asp-for="UserName" type="text" maxlength="1000" />
+                <span asp-validation-for="UserName" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3">
+                <label asp-for="Password1">Password</label>
+            </div>
+            <div class="col-md-3">
+                <input asp-for="Password1" type="password" maxlength="10000" />
+                <span asp-validation-for="Password1" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3">
+                <label asp-for="Password2">Reenter Password</label>
+            </div>
+            <div class="col-md-3">
+                <input asp-for="Password2" type="password" maxlength="10000" />
+                <span asp-validation-for="Password2" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3 offset-md-3">
+                <input type="submit" value="Create User" style="margin-top:2rem;@((Model?.Success ?? string.Empty) != string.Empty ? "disabled=\"true\"" : string.Empty)" />
+            </div>
+        </div>
+    </div>
+</form>
+<div style="font-size: small; margin-top: 3rem;">
+    <p>
+        Password requirements:
+        <ul style="list-style-type: circle; list-style-position: outside;">
+            <li>No less then 12 characters in length</li>
+            <li>Must include upper and lower case letters</li>
+            <li>Must include numeric characters</li>
+            <li>Must include punctuation characters</li>
+        </ul>
+    </p>
+</div>

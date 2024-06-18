@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using CommonCore = BigGrayBison.Common.Core;
 
 namespace BigGrayBison.Authorize.Core
 {
@@ -13,11 +14,13 @@ namespace BigGrayBison.Authorize.Core
         private const double _minimumResponseSeconds = 1.5;
         private readonly IUserFactory _userFactory;
         private readonly IUserCredentialDataFactory _userCredentialDataFactory;
+        private readonly UserCredentialProcessor _userCredentialProcessor;
 
-        public UserAuthorizer(IUserFactory userFactory, IUserCredentialDataFactory userCredentialDataFactory)
+        public UserAuthorizer(IUserFactory userFactory, IUserCredentialDataFactory userCredentialDataFactory, CommonCore.IKeyVault keyVault)
         {
             _userFactory = userFactory;
             _userCredentialDataFactory = userCredentialDataFactory;
+            _userCredentialProcessor = new UserCredentialProcessor(keyVault);
         }
 
         public async Task<IUser> Authorize(ISettings settings, string name, string password)
@@ -47,17 +50,17 @@ namespace BigGrayBison.Authorize.Core
 
         private async Task<bool> CheckUserCredentials(ISettings settings, IUser user, string password)
         {
-            IEnumerable<UserCredentialData> credentials = (await _userCredentialDataFactory.GetByUserId(new Common.Core.DataSettings(settings), user.UserId))
+            IEnumerable<UserCredentialData> credentials = (await _userCredentialDataFactory.GetByUserId(new CommonCore.DataSettings(settings), user.UserId))
                 .Where(data => data.IsActive && (!data.Expiration.HasValue || DateTime.UtcNow <= data.Expiration.Value));
             bool isAuthentic = false;
             bool withPasswordless = false;
             int countWithSecret = 0;
             foreach (UserCredentialData credential in credentials)
             {
-                if (credential.SecretKey.HasValue)
+                if (credential.Secret != null)
                 {
                     countWithSecret += 1;
-                    // todo check password
+                    isAuthentic = !isAuthentic ? await _userCredentialProcessor.IsAuthentic(settings, credential, password) : isAuthentic;
                 }
                 else if (string.IsNullOrEmpty(password))
                 {

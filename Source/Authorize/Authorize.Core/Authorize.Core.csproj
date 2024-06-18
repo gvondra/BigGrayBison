@@ -26,11 +26,18 @@
 
 	<ItemGroup>
 		<PackageReference Include="Autofac" Version="8.0.*" />
+		<PackageReference Include="Azure.Identity" Version="1.11.*" />
+		<PackageReference Include="Azure.Security.KeyVault.Keys" Version="4.6.*" />
+		<PackageReference Include="BrassLoon.Interface.Address" Version="1.1.0" />
 		<PackageReference Include="BrassLoon.JwtUtility" Version="1.4.*" />
+		<PackageReference Include="Konscious.Security.Cryptography.Argon2" Version="1.3.*" />
+		<PackageReference Include="Polly" Version="8.4.*" />
+		<PackageReference Include="Polly.Caching.Memory" Version="3.0.*" />
 	</ItemGroup>
 	
 	<ItemGroup>
 	  <ProjectReference Include="..\..\Common\Common.Core\Common.Core.csproj" />
+	  <ProjectReference Include="..\Authorize.Common\Authorize.Common.csproj" />
 	  <ProjectReference Include="..\Authorize.Constants.Internal\Authorize.Constants.Internal.csproj" />
 	  <ProjectReference Include="..\Authorize.Data\Authorize.Data.csproj" />
 	  <ProjectReference Include="..\Authorize.Framework\Authorize.Framework.csproj" />

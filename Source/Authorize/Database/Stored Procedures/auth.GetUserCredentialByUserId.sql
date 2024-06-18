@@ -4,8 +4,10 @@ AS
 SELECT 
 [UserCredentialId],
 [UserId],
-[SecretKey],
+[MasterKey],
 [SecretSalt],
+[SecretKey],
+[Secret],
 [IsActive],
 [Expiration],
 [CreateTimestamp],

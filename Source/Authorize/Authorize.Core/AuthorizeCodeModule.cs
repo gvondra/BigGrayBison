@@ -14,7 +14,10 @@ namespace BigGrayBison.Authorize.Core
             builder.RegisterType<KeyVault>().As<IKeyVault>();
             builder.RegisterType<SigningKeyFactory>().As<ISigningKeyFactory>();
             builder.RegisterType<SigningKeySaver>().As<ISigningKeySaver>();
+            builder.RegisterType<UserCreator>().As<IUserCreator>();
+            builder.RegisterType<UserCredentialUpdater>().As<IUserCredentialUpdater>();
             builder.RegisterType<UserAuthorizer>().As<IUserAuthorizer>();
+            builder.RegisterType<UserCreator>().As<IUserCreator>();
             builder.RegisterType<UserFactory>().As<IUserFactory>();
         }
     }

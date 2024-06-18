@@ -1,7 +1,12 @@
-﻿namespace BigGrayBison.Authorize.Framework
+﻿using System;
+
+namespace BigGrayBison.Authorize.Framework
 {
-    public interface ISettings : BigGrayBison.Common.Core.ISettings
+    public interface ISettings : BigGrayBison.Common.Core.ISettings,
+        BrassLoon.Interface.Address.ISettings
     {
+        Guid? AddressDomainId { get; }
+        string EncryptionKeyVaultAddress { get; }
         string SigningKeyVaultAddress { get; }
     }
 }

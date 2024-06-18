@@ -3,8 +3,10 @@
 	@name NVARCHAR(512),
 	@emailAddressId UNIQUEIDENTIFIER,
 	@isActive BIT,
-	@secretKey UNIQUEIDENTIFIER,
+	@masterKey UNIQUEIDENTIFIER,
 	@secretSalt BINARY(16),
+	@secretKey BINARY(256),
+	@secret BINARY(2024),
 	@credentialExpiration DATETIME2(1),
 	@timestamp DATETIME2(4) OUT
 AS
@@ -37,7 +39,7 @@ BEGIN
 
 	DECLARE @credentialId UNIQUEIDENTIFIER;
 	DECLARE @credentialTimestamp DATETIME2(4);
-	EXEC [auth].[SetUserCredential] @credentialId OUT, @id, @secretKey, @secretSalt, 1, @credentialExpiration, @credentialTimestamp OUT;
+	EXEC [auth].[SetUserCredential] @credentialId OUT, @id, @masterKey, @secretSalt, @secretKey, @secret, 1, @credentialExpiration, @credentialTimestamp OUT;
 
 	COMMIT TRANSACTION
 	END TRY

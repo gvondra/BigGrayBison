@@ -2,9 +2,10 @@
 (
 	[UserCredentialId] UNIQUEIDENTIFIER NOT NULL,
 	[UserId] UNIQUEIDENTIFIER NOT NULL,
-	-- I don't remember why I wanted this field [Name] NVARCHAR(512) NOT NULL,
-	[SecretKey] UNIQUEIDENTIFIER NULL,
+	[MasterKey] UNIQUEIDENTIFIER NULL,
 	[SecretSalt] BINARY(16) NULL,
+	[SecretKey] VARBINARY(256) NULL,
+	[Secret] VARBINARY(2024) NULL,
 	[IsActive] BIT NOT NULL,
 	[Expiration] DATETIME2(1) NULL,
 	[CreateTimestamp] DATETIME2(4) CONSTRAINT [DF_UserCredential_CreateTimestamp] DEFAULT(SYSUTCDATETIME()) NOT NULL,
