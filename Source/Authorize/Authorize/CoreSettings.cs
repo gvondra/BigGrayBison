@@ -21,7 +21,7 @@ namespace Authorize
 
         public Guid? AddressDomainId => _settings.AddressDomainId;
 
-        public string EncryptionKeyVaultAddress => throw new NotImplementedException();
+        public string EncryptionKeyVaultAddress => _settings.EncryptionKeyVaultAddress;
 
         string BrassLoon.Interface.Address.ISettings.BaseAddress => _settings.BrassLoonAddressApiBaseAddress;
 

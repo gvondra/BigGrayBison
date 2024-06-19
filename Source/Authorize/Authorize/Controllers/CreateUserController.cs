@@ -9,15 +9,18 @@ namespace Authorize.Controllers
     {
         private readonly IUserFactory _userFactory;
         private readonly IUserValidator _userValidator;
+        private readonly IUserCreator _userCreator;
         private readonly ISettingsFactory _settingsFactory;
 
         public CreateUserController(
             IUserFactory userFactory,
             IUserValidator userValidator,
+            IUserCreator userCreator,
             ISettingsFactory settingsFactory)
         {
             _userFactory = userFactory;
             _userValidator = userValidator;
+            _userCreator = userCreator;
             _settingsFactory = settingsFactory;
         }
 
@@ -34,6 +37,12 @@ namespace Authorize.Controllers
             {
                 await ValidateUserName(createUserVM.UserName);
                 ValidatePassword(createUserVM.Password1, createUserVM.Password2);
+            }
+            if (ModelState.IsValid)
+            {
+                IUser user = await _userCreator.Create(_settingsFactory.CreateCore(), createUserVM.UserName, createUserVM.Password1, createUserVM.EmailAddress);
+                if (user != null)
+                    createUserVM.Success = "User Account Created";
             }
             return View(createUserVM);
         }

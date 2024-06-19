@@ -6,7 +6,7 @@
 <h2>Create User</h2>
 @if ((Model?.Success ?? string.Empty) != string.Empty) {
 <div class="alert alert-success" role="alert">
-    @Html.DisplayText(Model.Success)
+    @Html.Encode(Model.Success)
 </div>
 }
 <form id="createUserForm" method="post" style="margin-top:2rem;">

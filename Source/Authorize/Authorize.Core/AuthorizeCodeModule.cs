@@ -19,6 +19,7 @@ namespace BigGrayBison.Authorize.Core
             builder.RegisterType<UserAuthorizer>().As<IUserAuthorizer>();
             builder.RegisterType<UserCreator>().As<IUserCreator>();
             builder.RegisterType<UserFactory>().As<IUserFactory>();
+            builder.RegisterType<UserValidator>().As<IUserValidator>();
         }
     }
 }

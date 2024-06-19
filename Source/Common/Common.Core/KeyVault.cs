@@ -64,23 +64,39 @@ namespace BigGrayBison.Common.Core
         private async Task<JsonWebKey> GetKey(KeyClient client, string name)
         {
             JsonWebKey jsonWebKey = null;
-            Response<KeyVaultKey> response = await client.GetKeyAsync(name);
-            if (response.Value == null)
+            KeyVaultKey keyVaultKey = await GetKeyWithNotFoundCheck(client, name);
+            if (keyVaultKey == null)
             {
                 lock (_keyCache)
                 {
-                    response = client.GetKeyAsync(name).Result;
-                    if (response.Value == null)
+                    keyVaultKey = GetKeyWithNotFoundCheck(client, name).Result;
+                    if (keyVaultKey == null)
                     {
                         jsonWebKey = CreateKey(client, name).Result.Key;
                     }
                 }
             }
-            if (response.Value != null)
+            if (keyVaultKey != null)
             {
-                jsonWebKey = response.Value.Key;
+                jsonWebKey = keyVaultKey.Key;
             }
             return jsonWebKey;
+        }
+
+        private async Task<KeyVaultKey> GetKeyWithNotFoundCheck(KeyClient client, string name)
+        {
+            try
+            {
+                Response<KeyVaultKey> response = await client.GetKeyAsync(name);
+                return response.Value;
+            }
+            catch (RequestFailedException ex)
+            {
+                if (ex.Status == 404)
+                    return null;
+                else
+                    throw;
+            }
         }
     }
 }
