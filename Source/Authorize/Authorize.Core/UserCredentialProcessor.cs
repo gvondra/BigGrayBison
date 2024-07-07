@@ -1,5 +1,4 @@
-﻿using Azure.Security.KeyVault.Keys;
-using BigGrayBison.Authorize.Data.Models;
+﻿using BigGrayBison.Authorize.Data.Models;
 using BigGrayBison.Authorize.Framework;
 using Microsoft.Extensions.Caching.Memory;
 using Polly;
@@ -36,9 +35,7 @@ namespace BigGrayBison.Authorize.Core
             Array.Copy(aes.Key, 0, ivAndKey, aes.IV.Length, aes.Key.Length);
 
             Guid masterKey = GetMasterKey();
-            JsonWebKey jsonWebKey = await _keyVault.GetKey(settings.EncryptionKeyVaultAddress, masterKey.ToString("N"));
-            using RSA rsa = jsonWebKey.ToRSA();
-            byte[] keyEncrypted = rsa.Encrypt(ivAndKey, _padding);
+            byte[] keyEncrypted = await _keyVault.Encrypt(settings.EncryptionKeyVaultAddress, masterKey.ToString("N"), ivAndKey);
 
             return new UserCredentialData
             {
@@ -54,12 +51,10 @@ namespace BigGrayBison.Authorize.Core
         {
             byte[] passwordHash = SecretHash.Compute(password, userCredentialData.SecretSalt);
 
-            JsonWebKey jsonWebKey = await _keyVault.GetKey(settings.EncryptionKeyVaultAddress, userCredentialData.MasterKey.Value.ToString("N"));
-            byte[] ivAndKey;
-            using (RSA rsa = jsonWebKey.ToRSA(true))
-            {
-                ivAndKey = rsa.Decrypt(userCredentialData.SecretKey, _padding);
-            }
+            byte[] ivAndKey = await _keyVault.Decrypt(
+                settings.EncryptionKeyVaultAddress,
+                userCredentialData.MasterKey.Value.ToString("N"),
+                userCredentialData.SecretKey);
 
             byte[] iv = new byte[16];
             byte[] aesKey = new byte[ivAndKey.Length - 16];

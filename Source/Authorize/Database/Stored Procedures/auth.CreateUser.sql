@@ -5,8 +5,8 @@
 	@isActive BIT,
 	@masterKey UNIQUEIDENTIFIER,
 	@secretSalt BINARY(16),
-	@secretKey BINARY(256),
-	@secret BINARY(2024),
+	@secretKey VARBINARY(256),
+	@secret VARBINARY(1024),
 	@credentialExpiration DATETIME2(1),
 	@timestamp DATETIME2(4) OUT
 AS

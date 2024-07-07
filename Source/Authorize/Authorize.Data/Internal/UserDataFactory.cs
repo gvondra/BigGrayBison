@@ -13,6 +13,22 @@ namespace BigGrayBison.Authorize.Data.Internal
             _dataFactory = dataFactory;
         }
 
+        public async Task<UserData> Get(ISqlSettings settings, Guid id)
+        {
+            IDataParameter[] parameters = new IDataParameter[]
+            {
+                DataUtil.CreateParameter(_providerFactory, "id", DbType.Guid, DataUtil.GetParameterValue(id))
+            };
+            return (await _dataFactory.GetData(
+                settings,
+                _providerFactory,
+                "[auth].[GetUser]",
+                () => new UserData(),
+                DataUtil.AssignDataStateManager,
+                parameters))
+                .FirstOrDefault();
+        }
+
         public async Task<UserData> GetByName(ISqlSettings settings, string name)
         {
             IDataParameter[] parameters = new IDataParameter[]

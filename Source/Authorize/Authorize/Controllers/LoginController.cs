@@ -2,6 +2,7 @@
 using BigGrayBison.Authorize.Framework;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 
@@ -13,11 +14,22 @@ namespace Authorize.Controllers
     {
         private readonly ISettingsFactory _settingsFactory;
         private readonly IClientFactory _clientFactory;
+        private readonly IUserAuthorizer _userAuthorizer;
+        private readonly IAuthorizationCodeFactory _authorizationCodeFactory;
+        private readonly IAuthorizationCodeSaver _authorizationCodeSaver;
 
-        public LoginController(ISettingsFactory settingsFactory, IClientFactory clientFactory)
+        public LoginController(
+            ISettingsFactory settingsFactory,
+            IClientFactory clientFactory,
+            IUserAuthorizer userAuthorizer,
+            IAuthorizationCodeFactory authorizationCodeFactory,
+            IAuthorizationCodeSaver authorizationCodeSaver)
         {
             _settingsFactory = settingsFactory;
             _clientFactory = clientFactory;
+            _userAuthorizer = userAuthorizer;
+            _authorizationCodeFactory = authorizationCodeFactory;
+            _authorizationCodeSaver = authorizationCodeSaver;
         }
 
         [HttpGet]
@@ -50,16 +62,45 @@ namespace Authorize.Controllers
         {
             IClient client = null;
             IActionResult result = null;
+            CoreSettings settings = _settingsFactory.CreateCore();
             if (ModelState.IsValid)
             {
                 if (!string.IsNullOrEmpty(loginVM.ClientId) && Guid.TryParse(loginVM.ClientId, out Guid clientId))
-                    client = await _clientFactory.Get(_settingsFactory.CreateCore(), clientId);
+                    client = await _clientFactory.Get(settings, clientId);
                 result = ValidateRequestParameters(loginVM.ResponseType, client, loginVM.RedirectUrl, loginVM.State);
             }
             if (ModelState.IsValid && result == null && client != null)
             {
+                IUser user = await _userAuthorizer.Authorize(settings, loginVM.UserName, loginVM.Password);
+                if (user != null)
+                {
+                    IAuthorizationCode authorizationCode = _authorizationCodeFactory.Create(settings, client, user, loginVM.State, loginVM.RedirectUrl);
+                    byte[] code = await authorizationCode.SetCode(settings);
+                    await _authorizationCodeSaver.Create(settings, authorizationCode);
+                    result = Redirect(CreateRedirectUrl(loginVM.RedirectUrl, code, loginVM.State));
+                }
+                else
+                {
+                    ModelState.AddModelError(string.Empty, "User Name or Password not recognized");
+                }
             }
             return result ?? View(loginVM);
+        }
+
+        [NonAction]
+        private static string CreateRedirectUrl(string redirectUrl, byte[] code, string state)
+        {
+            UriBuilder builder = new UriBuilder(redirectUrl);
+            if (builder.Query.Length > 0)
+                builder.Query += "&";
+            builder.Query += "code=" + string.Join(string.Empty, code.Select(c => c.ToString("x2")));
+            if (!string.IsNullOrEmpty(state))
+            {
+                if (builder.Query.Length > 0)
+                    builder.Query += "&";
+                builder.Query += "state=" + HttpUtility.UrlEncode(state);
+            }
+            return builder.ToString();
         }
 
         // much of this is defined in section 4.1.2.1 (https://datatracker.ietf.org/doc/html/rfc6749#section-4.1.2.1)

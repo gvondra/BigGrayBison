@@ -7,5 +7,6 @@ namespace BigGrayBison.Authorize.Framework
     {
         ISigningKey Create();
         Task<IEnumerable<ISigningKey>> GetAll(ISettings settings);
+        Task<ISigningKey> GetActive(ISettings settings);
     }
 }

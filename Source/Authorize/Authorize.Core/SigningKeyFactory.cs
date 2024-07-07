@@ -32,6 +32,13 @@ namespace BigGrayBison.Authorize.Core
             return result;
         }
 
+        public async Task<ISigningKey> GetActive(Framework.ISettings settings)
+        {
+            return (await GetAll(settings))
+                .OrderByDescending(k => k.CreateTimestamp)
+                .FirstOrDefault();
+        }
+
         public async Task<IEnumerable<ISigningKey>> GetAll(Framework.ISettings settings)
         {
             return (await _dataFactory.GetAll(new DataSettings(settings)))

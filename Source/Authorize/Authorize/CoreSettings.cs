@@ -23,6 +23,8 @@ namespace Authorize
 
         public string EncryptionKeyVaultAddress => _settings.EncryptionKeyVaultAddress;
 
+        public string TokenIssuer => _settings.TokenIssuer;
+
         string BrassLoon.Interface.Address.ISettings.BaseAddress => _settings.BrassLoonAddressApiBaseAddress;
 
         public Task<string> GetConnetionString() => Task.FromResult(_settings.ConnectionString);

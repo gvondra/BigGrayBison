@@ -1,18 +1,28 @@
 ﻿using BigGrayBison.Authorize.Data;
 using BigGrayBison.Authorize.Data.Models;
 using BigGrayBison.Authorize.Framework;
+using System;
 using System.Threading.Tasks;
 using CommonCore = BigGrayBison.Common.Core;
+using InterfaceAddress = BrassLoon.Interface.Address;
 
 namespace BigGrayBison.Authorize.Core
 {
     public class UserFactory : IUserFactory
     {
         private readonly IUserDataFactory _dataFactory;
+        private readonly InterfaceAddress.IEmailAddressService _emailAddressService;
 
-        public UserFactory(IUserDataFactory dataFactory)
+        public UserFactory(IUserDataFactory dataFactory, InterfaceAddress.IEmailAddressService emailAddressService)
         {
             _dataFactory = dataFactory;
+            _emailAddressService = emailAddressService;
+        }
+
+        public async Task<IUser> Get(ISettings settings, Guid id)
+        {
+            UserData data = await _dataFactory.Get(new CommonCore.DataSettings(settings), id);
+            return data != null ? Create(data) : null;
         }
 
         public async Task<IUser> GetByName(ISettings settings, string name)
@@ -24,6 +34,6 @@ namespace BigGrayBison.Authorize.Core
         public Task<bool> GetUserNameAvailable(ISettings settings, string name)
             => _dataFactory.GetUserNameAvailable(new CommonCore.DataSettings(settings), name);
 
-        private static User Create(UserData data) => new User(data);
+        private User Create(UserData data) => new User(data, _emailAddressService);
     }
 }

@@ -15,6 +15,8 @@ namespace BigGrayBison.Authorize.Data
                 .InstancePerLifetimeScope()
                 .As<ISqlDbProviderFactory>()
                 .As<IDbProviderFactory>();
+            builder.RegisterType<AuthorizationCodeDataFactory>().As<IAuthorizationCodeDataFactory>();
+            builder.RegisterType<AuthorizationCodeDataSaver>().As<IAuthorizationCodeDataSaver>();
             builder.RegisterType<ClientDataFactory>().As<IClientDataFactory>();
             builder.RegisterType<SigningKeyDataFactory>().As<ISigningKeyDataFactory>();
             builder.RegisterType<SigningKeyDataSaver>().As<ISigningKeyDataSaver>();

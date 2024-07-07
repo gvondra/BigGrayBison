@@ -6,7 +6,7 @@ namespace Authorize
     {
         public string ConnectionString { get; set; }
         public bool EnableDatabaseAccessToken { get; set; }
-        public string LoginClientId { get; set; }
+        public Guid? LoginClientId { get; set; }
         public string LoginRedirectUrl { get; set; }
         public Guid? AddressDomainId { get; set; }
         public Guid? LogDomainId { get; set; }
@@ -17,5 +17,6 @@ namespace Authorize
         public string SigningKeyVaultAddress { get; set; }
         public string BrassLoonAccountApiBaseAddress { get; set; }
         public string BrassLoonAddressApiBaseAddress { get; set; }
+        public string TokenIssuer { get; set; }
     }
 }

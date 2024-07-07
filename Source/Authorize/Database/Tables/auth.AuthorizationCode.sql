@@ -8,7 +8,7 @@
 	[State] NVARCHAR(64) NOT NULL,
 	[Expiration] DATETIME2(4) NOT NULL,
 	[RedirectUrl] NVARCHAR(2048) NOT NULL,
-	[CodeChallenge] VARBINARY(1024) NOT NULL,
+	[CodeChallenge] VARBINARY(1024) NULL,
 	[CodeChallengeMethod] SMALLINT NOT NULL,
 	[IsActive] BIT NOT NULL,
 	[CreateTimestamp] DATETIME2(4) CONSTRAINT [DF_AuthorizationCode_CreateTimestamp] DEFAULT(SYSUTCDATETIME()) NOT NULL,
@@ -24,4 +24,4 @@ CREATE NONCLUSTERED INDEX [IX_AuthorizationCode_UserId] ON [auth].[Authorization
 
 GO
 
-CREATE NONCLUSTERED INDEX [IX_AuthorizationCode_ClientId] ON [auth].[AuthorizationCode] ([ClientId])
+CREATE NONCLUSTERED INDEX [IX_AuthorizationCode_ClientId] ON [auth].[AuthorizationCode] ([ClientId]) INCLUDE ([Expiration], [IsActive])

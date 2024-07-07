@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 
 namespace BigGrayBison.Authorize.Framework
 {
@@ -9,5 +10,7 @@ namespace BigGrayBison.Authorize.Framework
         bool IsActive { get; set; }
         DateTime CreateTimestamp { get; }
         DateTime UpdateTimestamp { get; }
+        Task<string> GetEmailAddress(ISettings settings);
+        void SetEmailAddress(string emailAddress);
     }
 }

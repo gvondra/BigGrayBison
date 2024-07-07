@@ -1,5 +1,6 @@
 ﻿using Azure;
 using Azure.Security.KeyVault.Keys;
+using Azure.Security.KeyVault.Keys.Cryptography;
 using Azure.Security.KeyVault.Secrets;
 using Microsoft.Extensions.Caching.Memory;
 using Polly;
@@ -33,37 +34,58 @@ namespace BigGrayBison.Common.Core
                 new Context(name));
         }
 
-        public async Task<JsonWebKey> CreateKey(string vaultAddress, string name)
+        public async Task<JsonWebKey> CreateKey(string vaultAddress, string name, DateTime? expiration = null)
         {
             KeyClient client = new KeyClient(new Uri(vaultAddress), AzureCredential.DefaultAzureCredential);
-            return (await CreateKey(client, name)).Key;
+            return (await CreateKey(client, name, expiration)).Key;
         }
 
-        private async Task<KeyVaultKey> CreateKey(KeyClient client, string name)
+        private async Task<KeyVaultKey> CreateKey(KeyClient client, string name, DateTime? expiration)
         {
-            Response<KeyVaultKey> response = await client.CreateRsaKeyAsync(
-                new CreateRsaKeyOptions(name)
-                {
-                    Enabled = true,
-                    KeySize = 2048
-                });
+            CreateRsaKeyOptions options = new CreateRsaKeyOptions(name)
+            {
+                Enabled = true,
+                KeySize = 2048
+            };
+            if (expiration.HasValue)
+                options.ExpiresOn = expiration.Value;
+            options.KeyOperations.Add(KeyOperation.Decrypt);
+            options.KeyOperations.Add(KeyOperation.Encrypt);
+            Response<KeyVaultKey> response = await client.CreateRsaKeyAsync(options);
             return response.Value;
         }
 
-        public Task<JsonWebKey> GetKey(string vaultAddress, string name)
+        public Task<JsonWebKey> GetKey(string vaultAddress, string name, DateTime? expiration = null)
         {
             return _keyCache.ExecuteAsync(
-                (context) =>
+                async (context) =>
                 {
                     KeyClient client = new KeyClient(new Uri(vaultAddress), AzureCredential.DefaultAzureCredential);
-                    return GetKey(client, name);
+                    return (await GetKey(client, name, expiration))?.Key;
                 },
                 new Context(name));
         }
 
-        private async Task<JsonWebKey> GetKey(KeyClient client, string name)
+        public async Task<byte[]> Encrypt(string vaultAddress, string keyName, byte[] value, DateTime? expiration = null)
         {
-            JsonWebKey jsonWebKey = null;
+            KeyClient client = new KeyClient(new Uri(vaultAddress), AzureCredential.DefaultAzureCredential);
+            KeyVaultKey keyVaultKey = await GetKey(client, keyName, expiration);
+            CryptographyClient cryptographyClient = client.GetCryptographyClient(keyVaultKey.Name, keyVaultKey.Properties.Version);
+            EncryptResult result = await cryptographyClient.EncryptAsync(EncryptionAlgorithm.RsaOaep256, value);
+            return result.Ciphertext;
+        }
+
+        public async Task<byte[]> Decrypt(string vaultAddress, string keyName, byte[] value)
+        {
+            KeyClient client = new KeyClient(new Uri(vaultAddress), AzureCredential.DefaultAzureCredential);
+            KeyVaultKey keyVaultKey = await GetKeyWithNotFoundCheck(client, keyName);
+            CryptographyClient cryptographyClient = client.GetCryptographyClient(keyVaultKey.Name, keyVaultKey.Properties.Version);
+            DecryptResult result = await cryptographyClient.DecryptAsync(EncryptionAlgorithm.RsaOaep256, value);
+            return result.Plaintext;
+        }
+
+        private async Task<KeyVaultKey> GetKey(KeyClient client, string name, DateTime? expiration = null)
+        {
             KeyVaultKey keyVaultKey = await GetKeyWithNotFoundCheck(client, name);
             if (keyVaultKey == null)
             {
@@ -72,15 +94,11 @@ namespace BigGrayBison.Common.Core
                     keyVaultKey = GetKeyWithNotFoundCheck(client, name).Result;
                     if (keyVaultKey == null)
                     {
-                        jsonWebKey = CreateKey(client, name).Result.Key;
+                        keyVaultKey = CreateKey(client, name, expiration).Result;
                     }
                 }
             }
-            if (keyVaultKey != null)
-            {
-                jsonWebKey = keyVaultKey.Key;
-            }
-            return jsonWebKey;
+            return keyVaultKey;
         }
 
         private async Task<KeyVaultKey> GetKeyWithNotFoundCheck(KeyClient client, string name)

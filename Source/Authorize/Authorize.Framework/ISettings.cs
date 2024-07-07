@@ -8,5 +8,6 @@ namespace BigGrayBison.Authorize.Framework
         Guid? AddressDomainId { get; }
         string EncryptionKeyVaultAddress { get; }
         string SigningKeyVaultAddress { get; }
+        string TokenIssuer { get; }
     }
 }

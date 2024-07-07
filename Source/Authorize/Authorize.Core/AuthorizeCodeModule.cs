@@ -10,6 +10,9 @@ namespace BigGrayBison.Authorize.Core
         {
             base.Load(builder);
             builder.RegisterModule(new BigGrayBison.Authorize.Data.AuthorizeDataModule());
+            builder.RegisterType<AccessTokenGenerator>().As<IAccessTokenGenerator>();
+            builder.RegisterType<AuthorizationCodeFactory>().As<IAuthorizationCodeFactory>();
+            builder.RegisterType<AuthorizationCodeSaver>().As<IAuthorizationCodeSaver>();
             builder.RegisterType<ClientFactory>().As<IClientFactory>();
             builder.RegisterType<KeyVault>().As<IKeyVault>();
             builder.RegisterType<SigningKeyFactory>().As<ISigningKeyFactory>();

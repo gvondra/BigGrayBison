@@ -90,6 +90,9 @@
     <Build Include="Stored Procedures\auth.CreateSigningKey.sql" />
     <Build Include="Stored Procedures\auth.GetUserCredentialByUserId.sql" />
     <Build Include="Stored Procedures\auth.GetUserNameAvailable.sql" />
+    <Build Include="Stored Procedures\auth.CreateAuthorizationCode.sql" />
+    <Build Include="Stored Procedures\auth.GetAuthorizationCodeByClientIdIsActiveMinExpiration.sql" />
+    <Build Include="Stored Procedures\auth.GetUser.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="CompareLocal.scmp" />

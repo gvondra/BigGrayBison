@@ -47,7 +47,9 @@ namespace Authorize.Core.Test
 
             await AuthenticateUserTest(userCredentialData, secret, keyVault);
 
-            keyVault.Verify(v => v.GetKey(It.IsAny<string>(), It.IsNotNull<string>()), Times.Exactly(2));
+            keyVault.Verify(v => v.GetKey(It.IsAny<string>(), It.IsNotNull<string>(), default(DateTime?)), Times.Never);
+            keyVault.Verify(v => v.Encrypt(It.IsAny<string>(), It.IsNotNull<string>(), It.IsNotNull<byte[]>(), default(DateTime?)), Times.Once);
+            keyVault.Verify(v => v.Decrypt(It.IsAny<string>(), It.IsNotNull<string>(), It.IsNotNull<byte[]>()), Times.Once);
         }
 
         private async Task AuthenticateUserTest(UserCredentialData userCredentialData, string secret, Mock<CommonCore.IKeyVault> keyVault)
@@ -77,8 +79,18 @@ namespace Authorize.Core.Test
         private static Mock<CommonCore.IKeyVault> CreateKeyVault()
         {
             Mock<CommonCore.IKeyVault> keyVault = new Mock<CommonCore.IKeyVault>();
-            keyVault.Setup(v => v.GetKey(It.IsAny<string>(), It.IsNotNull<string>()))
-                .Returns(Task.FromResult(new JsonWebKey(RSA.Create(2048), true, new List<KeyOperation> { KeyOperation.Encrypt, KeyOperation.Decrypt })));
+            //keyVault.Setup(v => v.GetKey(It.IsAny<string>(), It.IsNotNull<string>()))
+            //    .Returns(Task.FromResult(new JsonWebKey(RSA.Create(2048), true, new List<KeyOperation> { KeyOperation.Encrypt, KeyOperation.Decrypt })));
+            keyVault.Setup(v => v.Encrypt(It.IsAny<string>(), It.IsNotNull<string>(), It.IsNotNull<byte[]>(), default(DateTime?)))
+                .Returns((string url, string key, byte[] value, DateTime? e) =>
+                {
+                    return Task.FromResult(value);
+                });
+            keyVault.Setup(v => v.Decrypt(It.IsAny<string>(), It.IsNotNull<string>(), It.IsNotNull<byte[]>()))
+                .Returns((string url, string key, byte[] value) =>
+                {
+                    return Task.FromResult(value);
+                });
             return keyVault;
         }
 
