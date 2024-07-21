@@ -1,0 +1,25 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@model Authorize.Models.UsersVM
+@{
+}
+<h1>Big Gray Bison <img src="~/image/Bison-Silhouette.svg" style="height:1.1em" /></h1>
+<h2>Users</h2>
+<form id="userSearchForm" method="post" style="margin-top:2rem;">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-2">
+                <label asp-for="UserName">User Name</label>
+            </div>
+            <div class="col-md-3">
+                <input asp-for="UserName" type="text" maxlength="1000" />
+                <span asp-validation-for="UserName" class="text-danger"></span>
+            </div>
+            <div class="col-md-2">
+                <input type="submit" value="Search" style="margin-left: 2rem" />
+            </div>
+        </div>
+    </div>
+</form>

@@ -1,4 +1,5 @@
-﻿using System.Data.Common;
+﻿using System.Collections;
+using System.Data.Common;
 
 namespace BigGrayBison.Authorize.Data.Internal
 {
@@ -27,12 +28,7 @@ namespace BigGrayBison.Authorize.Data.Internal
                 timestamp.Direction = ParameterDirection.Output;
                 _ = command.Parameters.Add(timestamp);
 
-                command.Parameters.Add(
-                    DataUtil.CreateParameter(_providerFactory, "name", DbType.String, DataUtil.GetParameterValue(data.Name)));
-                command.Parameters.Add(
-                    DataUtil.CreateParameter(_providerFactory, "emailAddressId", DbType.Guid, DataUtil.GetParameterValue(data.EmailAddressId)));
-                command.Parameters.Add(
-                    DataUtil.CreateParameter(_providerFactory, "isActive", DbType.Boolean, DataUtil.GetParameterValue(data.IsActive)));
+                AddCommonParameters(command.Parameters, data);
                 command.Parameters.Add(
                     DataUtil.CreateParameter(_providerFactory, "masterKey", DbType.Guid, DataUtil.GetParameterValue(userCredentialData.MasterKey)));
                 command.Parameters.Add(
@@ -48,6 +44,31 @@ namespace BigGrayBison.Authorize.Data.Internal
                 data.UserId = (Guid)id.Value;
                 data.CreateTimestamp = DateTime.SpecifyKind((DateTime)timestamp.Value, DateTimeKind.Utc);
                 data.UpdateTimestamp = DateTime.SpecifyKind((DateTime)timestamp.Value, DateTimeKind.Utc);
+            }
+        }
+
+        public async Task Update(ITransactionHandler transactionHandler, UserData data)
+        {
+            if (data.Manager.GetState(data) == DataState.Updated)
+            {
+                await _providerFactory.EstablishTransaction(transactionHandler, data);
+                using (DbCommand command = transactionHandler.Connection.CreateCommand())
+                {
+                    command.CommandText = "[auth].[UpdateUser]";
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Transaction = transactionHandler.Transaction.InnerTransaction;
+
+                    IDataParameter timestamp = DataUtil.CreateParameter(_providerFactory, "timestamp", DbType.DateTime2);
+                    timestamp.Direction = ParameterDirection.Output;
+                    _ = command.Parameters.Add(timestamp);
+
+                    command.Parameters.Add(
+                        DataUtil.CreateParameter(_providerFactory, "id", DbType.Guid, DataUtil.GetParameterValue(data.UserId)));
+                    AddCommonParameters(command.Parameters, data);
+
+                    _ = await command.ExecuteNonQueryAsync();
+                    data.UpdateTimestamp = DateTime.SpecifyKind((DateTime)timestamp.Value, DateTimeKind.Utc);
+                }
             }
         }
 
@@ -89,6 +110,18 @@ namespace BigGrayBison.Authorize.Data.Internal
                 data.UpdateTimestamp = DateTime.SpecifyKind((DateTime)timestamp.Value, DateTimeKind.Utc);
                 data.UserId = userId;
             }
+        }
+
+        private void AddCommonParameters(IList commandParameters, UserData data)
+        {
+            commandParameters.Add(
+                DataUtil.CreateParameter(_providerFactory, "name", DbType.String, DataUtil.GetParameterValue(data.Name)));
+            commandParameters.Add(
+                DataUtil.CreateParameter(_providerFactory, "emailAddressId", DbType.Guid, DataUtil.GetParameterValue(data.EmailAddressId)));
+            commandParameters.Add(
+                DataUtil.CreateParameter(_providerFactory, "isActive", DbType.Boolean, DataUtil.GetParameterValue(data.IsActive)));
+            commandParameters.Add(
+                DataUtil.CreateParameter(_providerFactory, "roles", DbType.Int32, DataUtil.GetParameterValue(data.Roles)));
         }
     }
 }

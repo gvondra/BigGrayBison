@@ -3,6 +3,7 @@
 	@name NVARCHAR(512),
 	@emailAddressId UNIQUEIDENTIFIER,
 	@isActive BIT,
+	@roles INT,
 	@masterKey UNIQUEIDENTIFIER,
 	@secretSalt BINARY(16),
 	@secretKey VARBINARY(256),
@@ -28,8 +29,8 @@ BEGIN
 		RAISERROR (@message, 16, 1);
 	END
 
-	INSERT INTO [auth].[User] ([UserId], [Name], [EmailAddressId], [IsActive], [CreateTimestamp], [UpdateTimestamp])
-	VALUES (@id, @name, @emailAddressId, @isActive, @timestamp, @timestamp);
+	INSERT INTO [auth].[User] ([UserId], [Name], [EmailAddressId], [IsActive], [Roles], [CreateTimestamp], [UpdateTimestamp])
+	VALUES (@id, @name, @emailAddressId, @isActive, @roles, @timestamp, @timestamp);
 
 	DECLARE @accountTimestamp DATETIME2(4);
 	EXEC [auth].[CreateAccount] @accountId out, @name, @isActive, @accountTimestamp out;

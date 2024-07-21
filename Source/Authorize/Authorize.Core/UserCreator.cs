@@ -44,7 +44,7 @@ namespace BigGrayBison.Authorize.Core
             await CommonCore.Saver.Save(
                 new CommonCore.TransactionHandler(settings),
                 th => _dataSaver.Create(th, data, userCredentialData));
-            return new User(data, _emailAddressService);
+            return new User(data, _dataSaver, _emailAddressService);
         }
 
         private void Validate(string userName, string password, string emailAddress)

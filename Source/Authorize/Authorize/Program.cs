@@ -2,6 +2,7 @@ using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using BrassLoon.Extensions.Logging;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -95,6 +96,8 @@ namespace Authorize
                 {
                     options.ExpireTimeSpan = TimeSpan.FromMinutes(30);
                 });
+            _ = builder.Services.AddSingleton<IAuthorizationHandler, AuthorizationHandler>();
+            _ = builder.Services.AddAuthorization(builder.Configuration);
 
             WebApplication app = builder.Build();
 

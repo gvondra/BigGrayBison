@@ -1,0 +1,64 @@
+﻿@model Authorize.Models.UserVM
+@{
+}
+<h1>Big Gray Bison <img src="~/image/Bison-Silhouette.svg" style="height:1.1em" /></h1>
+<h2>User</h2>
+<form asp-action="Save" id="userSearchForm" method="post" style="margin-top:2rem;">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-2">
+                <label asp-for="Name">User Name</label>
+            </div>
+            <div class="col-md-3">
+                <input asp-for="Name" type="text" readonly />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-2">
+                <label asp-for="EmailAddress">Email</label>
+            </div>
+            <div class="col-md-3">
+                <input asp-for="EmailAddress" type="text" maxlength="1000" />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-2">
+                <label asp-for="IsActive">Is Active</label>
+            </div>
+            <div class="col-md-3">
+                <input asp-for="IsActive" type="checkbox" />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-2">
+                <label asp-for="IsUserEditor">Is User Editor</label>
+            </div>
+            <div class="col-md-3">
+                <input asp-for="IsUserEditor" type="checkbox" />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-2">
+                <label asp-for="CreateTimestamp">Created</label>
+            </div>
+            <div class="col-md-3">
+                <input asp-for="CreateTimestamp" asp-format="{0:yyyy-mm-dd HH:mm}" type="text" readonly />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-2">
+                <label asp-for="UpdateTimestamp">Updated</label>
+            </div>
+            <div class="col-md-3">
+                <input asp-for="UpdateTimestamp" asp-format="{0:yyyy-mm-dd HH:mm}" type="text" readonly />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3 offset-md-2">
+                @Html.HiddenFor(u => u.UserId)
+                <input type="submit" value="Save" style="margin-top: 2rem" />
+            </div>
+        </div>
+    </div>
+</form>
