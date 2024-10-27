@@ -25,9 +25,9 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Autofac" Version="8.0.*" />
-		<PackageReference Include="Azure.Identity" Version="1.11.*" />
-		<PackageReference Include="Azure.Security.KeyVault.Keys" Version="4.6.*" />
+		<PackageReference Include="Autofac" Version="8.1.*" />
+		<PackageReference Include="Azure.Identity" Version="1.13.*" />
+		<PackageReference Include="Azure.Security.KeyVault.Keys" Version="4.7.*" />
 		<PackageReference Include="BrassLoon.Interface.Address" Version="1.1.0" />
 		<PackageReference Include="BrassLoon.JwtUtility" Version="1.4.*" />
 		<PackageReference Include="Konscious.Security.Cryptography.Argon2" Version="1.3.*" />

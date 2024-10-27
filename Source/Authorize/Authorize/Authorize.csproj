@@ -36,16 +36,16 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Autofac" Version="8.0.0" />
-		<PackageReference Include="Autofac.Extensions.DependencyInjection" Version="9.0.0" />
+		<PackageReference Include="Autofac" Version="8.1.1" />
+		<PackageReference Include="Autofac.Extensions.DependencyInjection" Version="10.0.0" />
 		<PackageReference Include="BrassLoon.Extensions.Logging" Version="1.0.*" />
-		<PackageReference Include="BrassLoon.Interface.Account" Version="4.2.0" />
+		<PackageReference Include="BrassLoon.Interface.Account" Version="4.3.0" />
 		<PackageReference Include="BrassLoon.Interface.Address" Version="1.1.0" />
 		<PackageReference Include="BuildWebCompiler2022" Version="1.14.10">
 			<PrivateAssets>all</PrivateAssets>
 		</PackageReference>
 		<PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="8.0.*" />
-		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.*" />
+		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.9.*" />
 	</ItemGroup>
 
 	<ItemGroup>

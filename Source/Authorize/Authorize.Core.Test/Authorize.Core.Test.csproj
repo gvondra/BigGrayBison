@@ -14,16 +14,16 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Azure.Security.KeyVault.Keys" Version="4.6.*" />
+		<PackageReference Include="Azure.Security.KeyVault.Keys" Version="4.7.*" />
 		<PackageReference Include="BrassLoon.Interface.Address" Version="1.1.0" />
 		<PackageReference Include="coverlet.collector" Version="6.0.*">
 		  <PrivateAssets>all</PrivateAssets>
 		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
-		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.10.*" />
+		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.11.*" />
 		<PackageReference Include="Moq" Version="4.20.*" />
-		<PackageReference Include="MSTest.TestAdapter" Version="3.4.*" />
-		<PackageReference Include="MSTest.TestFramework" Version="3.4.*" />
+		<PackageReference Include="MSTest.TestAdapter" Version="3.6.*" />
+		<PackageReference Include="MSTest.TestFramework" Version="3.6.*" />
 	</ItemGroup>
 
 	<ItemGroup>
